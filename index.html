@@ -294,7 +294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zjw1996.github.io/2020/01/10/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://zjw1996.github.io/2020/01/12/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%A5%97%E6%8E%A5%E5%AD%97(Socket)%EF%BC%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Stephen Z">
@@ -313,7 +313,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/01/10/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2020/01/12/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%A5%97%E6%8E%A5%E5%AD%97(Socket)%EF%BC%9F/" itemprop="url">学习随笔：什么是套接字(Socket)？</a></h1>
         
 
         <div class="post-meta">
@@ -325,8 +325,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-10T09:35:09+08:00">
-                2020-01-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-12T13:42:45+08:00">
+                2020-01-12
               </time>
             
 
@@ -341,8 +341,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-01-10T09:35:09+08:00">
-                2020-01-10
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-12T14:00:29+08:00">
+                2020-01-12
               </time>
             
           </span>
@@ -377,19 +377,42 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+            <p>titie: 学习随笔：简述套接字(Socket)？<br>网络套接字又叫网际插座，在英文中是Internet Socket。在网络中，套接字扮演的角色正如插座一样，它是一个端点，可以与网络中的其它套接字建立连接。<br>套接字是一个位于网络中特定节点的服务所具有的标识符。套接字包含一个节点地址和一个端口号，用来标识这一服务。</p>
+<p>在网络中，由IP地址可以唯一确定一台主机，但是准确来说，网络通讯中的双方并不是主机，而是运行在主机上的进程，这样就需要进一步确定是主机中的哪个进程要进行网络通讯。因此，除了IP地址之外，还需要端口号来唯一确定主机中的通讯进程。IP地址和端口号就构成了一个网络中的唯一标识符，即套接字。</p>
+<p>套接字允许两个进程进行通讯，这两个进程可能运行在同一台机器上，也可能运行在不同的机器上。更准确地说，套接字是使用标准Unix文件描述符来与其它计算机进行通讯的一种方式。</p>
+<p>在Unix操作系统中，每一个读写操作都是通过读写文件描述符来完成的。一个文件描述符就是一个与打开的文件相关联的整数，它可以是一个网络连接、一个文本文件、一个终端或其它东西。</p>
+<h1 id="1-套接字的用途"><a href="#1-套接字的用途" class="headerlink" title="1  套接字的用途"></a>1  套接字的用途</h1><p>Socket被用于客户端/服务端应用框架中。服务端是一个针对客户端的请求执行某些特定操作的进程。大多数应用层协议如FTP、SMTP和POP3使用Socket来建立客户端与服务端之间的连接，从而进行数据的交换。</p>
+<h1 id="2-套接字的类型"><a href="#2-套接字的类型" class="headerlink" title="2 套接字的类型"></a>2 套接字的类型</h1><p>常见的套接字类型有三种。前两种被广泛地使用，而后一种使用较少。<br>一般情况下假定进程间使用同种类型的socket进行通讯，但事实上不同类型的socket之间并没有通讯上的限制。</p>
+<p>1.流套接字：提供面向连接、可靠的数据传输服务。该服务将保证数据能够实现无差错、无重复发送，并按顺序接收。如果你通过流套接字发送三个字符”A, B, C”，它们将会以同样的顺序到达——”A, B, C”，原因在于流套接字使用TCP（传输控制协议）进行数据传输。如果传输失败，发送方将会收到错误提示符。</p>
+<p>2.数据包套接字：提供无连接服务。你无需像使用流套接字那样建立一个连接，而只需将目的地址信息一同打包后发送出去。该服务使用UDP（用户数据报协议）进行传输，延迟小且效率高，缺点是不能保证数据传输的可靠性。</p>
+<p>3.原始套接字：允许用户对底层通讯协议进行访问。能够对底层的传输机制进行控制，因此可以用原始套接字来操纵网络层和传输层应用。原始套接字并不是给普通用户使用的，它们主要被用于开发新的通讯协议，或是用来获取已有通讯协议的一些隐蔽功能的访问权限。</p>
+<h1 id="3-常用Socket-API函数的功能"><a href="#3-常用Socket-API函数的功能" class="headerlink" title="3 常用Socket API函数的功能"></a>3 常用Socket API函数的功能</h1><h2 id="1-socket"><a href="#1-socket" class="headerlink" title="1 socket"></a>1 socket</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">&#x2F;&#x2F; Linux:#include &lt;sys&#x2F;types.h&gt; &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">int socket(int domain, int type, int protocol);</span><br></pre></td></tr></table></figure>
+<p>创建套接字时使用，操作系统会返回套接字描述符。最初是面向TCP/IP协议栈的，但最终设计成可以面向其他协议簇。<br>就如使用文件描述符来访问文件一样。程序是用套接字描述符来访问套接字。<br>接下来来详细介绍这三个参数<br>1.domain<br>就如写信一样,不同国家写信的地址写法不同，英国美国有从街-区-市的从小到大的地址写法！而中国的地址写法是从大到小，市-区-街。就如不同域有着不同地址表示格式。<br>常见的域是:AF_INET(IPV4域),AF_INET6(IPV6域),AF_UNIX,AF_UPSPEC…</p>
+<p>2.type<br>有SOCK_DGRAM 固定长度的、无连接的、不可靠的报文传递。两个进程不需要建立连接只需要向对方进程套接字发送一个报文。（有点像写信，你发送信息就代表你写了很多信件。每封都有地址，接收人。）<br>有SOCK_STREAM 可靠的,有序的,双向的连接型字节流。（有点像，你建了一条管道到别人家，建好以后你不用去送信，只需不断往管道里投字条。对方也可以往管道里投纸条到你家。）<br>有SOCK_SEQPACKET（和SOCK_STREAM 类似只是从套接字得到的不是字节流而是基于报文的服务。）<br>有SOCK_RAM（用于访问下面的网络层即IP层。构造自己的协议头部。）</p>
+<p>3.protocol<br>这个参数通常是0，在前2个参数已经确认的情况下一般用来选择默认的协议。比如在AF_INET SOCK_STREAM的情况下默认选择TCP<br>在AF_INET SOCK_DGREAM 的情况下默认选择UDP。<br>就像一个文件描述符一样。可以用read函数 write函数对文件描述符进行操作。同理可以对套接字描述符进行操作。<br>但是并不是所有的文件描述符操作都适用于套接字描述符。最常用的对套接字描述符的操作是shutdown<br>#include&lt;sys/socket.h&gt;<br>int shutdown(int sockfd,int how)<br>如果how是SHUT_RD 表示关闭读端无法再从套接字里读取<br>如果how是SHUT_WR 表示关闭写端无法再往套接字里写<br>how是SHUT_RDWR 说明同时无法写和读！<br>可以关闭一个方向开启另一个方向，比如关闭了写端但是还可以继续读取!</p>
+<h2 id="2-closesocket-close"><a href="#2-closesocket-close" class="headerlink" title="2 closesocket/close"></a>2 closesocket/close</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int closesocket(SOCKET sd);    &#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">int close(int fd);             &#x2F;&#x2F; Linux:#include &lt;unistd.h&gt;</span><br></pre></td></tr></table></figure>
+<p>①关闭一个描述符为sd/fd的套接<br>②如果多个进程共享一个套接字，调用函数将套接字引用计数减1，减至0才关闭。<br>③一个进程中的多线程对一个套接字的使用无计数。如果进程中的一个线程调用函数将一个套接字关闭，该进程中的其他线程也将不能访问该套接字。<br>返回值：0-成功，SOCKET_ERROR(-1)-失败。</p>
+<h2 id="3-listen"><a href="#3-listen" class="headerlink" title="3 listen"></a>3 listen</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">&#x2F;&#x2F; Linux:#include &lt;sys&#x2F;types.h&gt; &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">int listen(int sockfd, int backlog);</span><br></pre></td></tr></table></figure>
+<p>监听状态函数，置服务器端的流套接字处于监听状态，仅服务器端调用，并且仅用于面向连接的流式套接字。<br>两个参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int sockfd：服务器端的流套接字，仅用于面向连接的流式套接字。</span><br><span class="line">int backlog：设置连接请求队列大小，即缓存队列，可以设置连接客户端的最大连接个数</span><br><span class="line">当有多个客户端向服务器请求时，会受到此值的影响，默认值为20。</span><br></pre></td></tr></table></figure>
+<p>返回值：0-成功，SOCKET_ERROR(-1)-失败。</p>
+<h2 id="4-connect"><a href="#4-connect" class="headerlink" title="4 connect"></a>4 connect</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">&#x2F;&#x2F; Linux:#include &lt;sys&#x2F;types.h&gt; &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">int connect(int sockfd,const struct sockaddr *addr, socklen_t addrlen)</span><br></pre></td></tr></table></figure>
+<p>客户端程序调用connect函数来使客户套接字与特定计算机的特定端口的套接字连接。<br>仅用于客户端， 可用于TCP客户端，也可用于UDP客户端。</p>
+<pre><code>TCP客户端：建立TCP连接。
+UDP客户端：UDP是无连接的，功能只是指定服务器端点地址，实际是没有连接的，但看着像连接一样。</code></pre><p>三个参数：</p>
+<pre><code>int sockfd：客户端套接字。
+const struct sockaddr *addr：服务端套接字地址。
+socklen_t addrlen：服务端套接字长度。</code></pre><h2 id="5-accept"><a href="#5-accept" class="headerlink" title="5 accept"></a>5 accept</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">&#x2F;&#x2F; Linux:#include &lt;sys&#x2F;types.h&gt; &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">int accept(int sockfd, struct sockaddr *cliaddr, socklen_t *addrlen)</span><br></pre></td></tr></table></figure>
+<p>服务器端程序调用accept函数，从处于监听状态的流套接字的客户连接请求队列中取出排在最前的一个客户请求，并且创建一个新的套接字来与客户端套接字创建连接通道。<br>仅用于TCP套接字，仅用于服务器。<br>三个参数：</p>
+<pre><code>int sockfd：服务端套接字。
+const struct sockaddr *addr：客户端套接字地址。
+socklen_t *addrlen：客户端套接字长度地址。</code></pre><p>如果使用主套接字与客户端通信，因为TCP是点对点连接，那么在某一时刻服务器就只能为一个客户端提供服务，而不能够实现并发的TCP服务器。因此创建新套接字与客户端通信，服务器通过多线程、多进程创建新套接字，即可实现并发的TCP服务器。</p>
+<h2 id="6-send，sendto"><a href="#6-send，sendto" class="headerlink" title="6 send，sendto"></a>6 send，sendto</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">&#x2F;&#x2F; Linux:#include &lt;sys&#x2F;types.h&gt; &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">ssize_t send(int sockfd, const void *buf, size_t len, int flags);</span><br><span class="line">ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,</span><br><span class="line">                      const struct sockaddr *dest_addr, socklen_t addrlen);</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>  ①send函数用于TCP套接字（客户端与服务器端）或调用了connect函数的UDP客户端套接字。<br>② sendto函数用于UDP服务器端套接字与未调用connect函数的UDP客户端套接字。</p>
+<h2 id="7-recv-recvfrom"><a href="#7-recv-recvfrom" class="headerlink" title="7 recv, recvfrom"></a>7 recv, recvfrom</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Windows:#include &lt;WinSock2.h&gt;</span><br><span class="line">&#x2F;&#x2F; Linux:#include &lt;sys&#x2F;types.h&gt; &lt;sys&#x2F;socket.h&gt;</span><br><span class="line">ssize_t recv(int sockfd, void *buf, size_t len, int flags);</span><br><span class="line">ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,</span><br><span class="line">                        struct sockaddr *src_addr, socklen_t *addrlen);</span><br></pre></td></tr></table></figure>
+<p>①recv函数从TCP连接的另一端接收数据，或者从调用了connect函数的UDP客户端套接字接收服务器发来的数据。<br>②recvfrom用于从UDP服务器端套接字与未调用用connect函数的UDP客户端套接字接收对端数据。</p>
+<h1 id="4-函数小结"><a href="#4-函数小结" class="headerlink" title="4 函数小结"></a>4 函数小结</h1><p>socket：创建套接字<br>connect：“连接”远端服务器（仅用于客户端，注意TCP与UDP的区别）<br>closesocket/close：释放/关闭套接字<br>listen：置服务器端TCP套接字为监听模式，并设置队列大小（仅用于服务器端TCP套接字）<br>accept：接收/提取一个连接请求，创建新套接字，通过新套接字与客户端进行连接（仅用于服务器端的TCP套接字，也称为阻塞函数）<br>recv：接收数据（用于TCP套接字或连接模式的客户端UDP套接字）<br>recvfrom：接收数据报（用于非连接模式的UDP套接字）<br>send：发送数据（用于TCP套接字或连接模式的客户端UDP套接字）<br>sendto：发送数据报（用于非连接模式的UDP套接字）</p>
 
           
         
