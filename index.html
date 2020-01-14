@@ -294,6 +294,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zjw1996.github.io/2020/01/14/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E7%BB%A7%E6%89%BF%E3%80%81%E5%A4%9A%E6%80%81%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stephen Z">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DreamWei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/14/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E7%BB%A7%E6%89%BF%E3%80%81%E5%A4%9A%E6%80%81%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/" itemprop="url">学习随笔：继承、多态与虚函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-14T14:14:32+08:00">
+                2020-01-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-14T14:14:34+08:00">
+                2020-01-14
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>继承：所谓继承，是指在一个已存在类的基础上建立一个新类。通过继承联系在一起的类构成一种层次关系。已存在的类称为基类(base class)，新建立的类称为派生类(derived class)；也就是说在层次关系的根部的称为基类，从基类直接或者间接继承而来的类称为派生类。基类负责定义在层次关系中所有类的共性，即共同拥有的成员，而派生类定义了自身独有的成员。</p>
+<p>虚函数：对于某些成员函数，基类希望它的派生类能各自定义自己的功能，就可在基类中将该函数声明为虚函数（在函数名前加virtual ）如 <code>virtual int f(int a) const {};</code></p>
+<p>多态：顾名思义，多态就是“多种形态”的意思。它是面向对象程序设计的一个重要特征。在面向对象方法中一般是这样表述多态性的：同样的消息被不同类型的对象接收时导致的不同行为。所谓消息是指对类的成员函数的调用，不同行为是指不同的实现，也就是调用了不同的函数。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>1、继承方式有三种，即：public(公有继承)、private(私有继承)、protected(保护继承)，如果省略，则默认为private继承方式；<br>2、多重继承方式下，各基类之间要用逗号分开，每一个基类都有自己的继承方式，它们互不影响；<br>3、派生类只要写出其新增成员的声明或定义即可，基类的内容不必重复。<br>4、访问控制：某个类对其继承而来的成员的访问权限收到两个因素影响：一是在基类中该成员的访问说明符；二是在派生类的派生列表中的访问说明符。<br>派生访问说明符对于派生类的成员能否访问其直接基类的成员没什么影响。对基类成员的访问权限只与基类中的访问说明符有关。详细的访问关系如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">基类中      继承方式            子类中</span><br><span class="line"></span><br><span class="line">public     ＆ public继承        &#x3D;&gt; public</span><br><span class="line"></span><br><span class="line">public     ＆ protected继承     &#x3D;&gt; protected   </span><br><span class="line"></span><br><span class="line">public     ＆ private继承       &#x3D;&gt; private</span><br><span class="line"></span><br><span class="line">protected  ＆ public继承        &#x3D;&gt; protected</span><br><span class="line"></span><br><span class="line">protected  ＆ protected继承     &#x3D;&gt; protected   </span><br><span class="line"></span><br><span class="line">protected  ＆ private继承       &#x3D;&gt; private</span><br><span class="line"></span><br><span class="line">private    ＆ public继承        &#x3D;&gt; 子类无权访问</span><br><span class="line"></span><br><span class="line">private    ＆ protected继承     &#x3D;&gt; 子类无权访问</span><br><span class="line"></span><br><span class="line">private    ＆ private继承       &#x3D;&gt; 子类无权访问</span><br></pre></td></tr></table></figure>
+
+<h3 id="单一继承下的构造函数与析构函数"><a href="#单一继承下的构造函数与析构函数" class="headerlink" title="单一继承下的构造函数与析构函数"></a>单一继承下的构造函数与析构函数</h3><h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><p>构造函数不能是虚函数。对于基类的构造函数，它仅仅是在派生类构造函数中被调用，这种机制不同于继承。也就是说，派生类不继承基类的构造函数，将构造函数声明为虚函数没有什么意义。<br>构造函数初始化数据成员的顺序：先调用基类的构造函数初始化其数据成员，再调用派生类的构造函数初始化其数据成员。<br>派生类构造函数的定义格式：<br>派生类构造函数(总参数表) :基类1构造函数(形参,形参,…), 派生类新增数据成员1(形参),派生类新增数据成员2(形参){};<br>如Q是基类，数据成员有bookno，price，B是其派生类，新增了数据成员money。B的构造函数如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">B(const string&amp; a, double b,double c):Q(a ,b),money( c)&#123;&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h4><p>1、派生类与基类的析构函数没有什么联系，彼此独立，派生类或基类的析构函数只做各自类对象消亡前的清理工作;<br>2、在派生过程中，基类的析构函数不能继承，如果需要析构函数的话，就要在派生类中重新定义;<br>3、派生类析构函数的定义方法与没有继承关系的类中析构函数的定义方法完全相同，只要在函数体中负责把派生类新增的非对象成员的清理工作做好就够了，系统会自己调用基类及子对象的析构函数来对基类及子对象进行清理。<br>析构函数的执行顺序:<br>a、与构造函数的执行顺序正好相反<br>b、先析构派生类自己；<br>c、再析构各个子对象：如果有多个子对象，析构顺序与这些子对象在类中的说明次序相反；<br>d、最后才是析构基类。</p>
+<p>虚构析函数的格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">虚析构函数的声明格式 :</span><br><span class="line">virtual ~类名()</span><br><span class="line">&#123;</span><br><span class="line">	函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用虚构析函数的原因：<br>用new命令建立派生类对象时返回的是派生类指针，根据赋值兼容规则，可以把派生类指针赋给基类指针。当用delete 基类指针 来删除派生类对象时，只调用基类的析构函数, 不能释放派生类对象自身占有的内存空间。这一问题在引进虚析构函数后能够得到解决。</p>
+<p>虚析构函数与一般虚函数的不同之处 :<br>当基类的析构函数被声明为虚函数时，它的派生类的析构函数也自动成为虚函数，这些析构函数不要求同名;<br>一个虚析构函数的版本被调用执行后，接着就要调用执行基类版本，依此类推，直到执行到派生序列的最开始的那个析构函数的版本为止，也即说派生类析构函数、基类析构函数能够依次被执行。</p>
+<p>何时需要虚析构函数？<br>通过基类指针删除派生类对象时；<br>通过基类指针调用对象的析构函数。</p>
+<h2 id="虚函数与多态"><a href="#虚函数与多态" class="headerlink" title="虚函数与多态"></a>虚函数与多态</h2><p>当我们使用基类的引用或者指针调用一个虚成员函数时会执行动态绑定。因为我们直到运行时才能知道到底调用了哪个版本的虚函数，所以所有虚函数都必须有定义。通常情况下如果我们不使用某个函数，则无需为该函数提供定义。但是我们必须为每个虚函数都提供定义，而不管是否被用到了，这是因为连编译器也无法确定到底会使用哪个虚函数。<br>有关动态绑定的理解（转自<a href="https://blog.csdn.net/chgaowei/article/details/6427731" target="_blank" rel="noopener">常高伟</a>）：<br><strong>为了支持c++的多态性，才用了动态绑定和静态绑定。</strong><br>需要理解的四个名词：<br>1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。<br>2、对象的动态类型：目前所指对象的类型。是在运行期决定的。<br>对象的动态类型可以更改，但是静态类型无法更改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">class C : public B</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">class D : public B</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">D* pD &#x3D; new D();&#x2F;&#x2F;pD的静态类型是它声明的类型D*，动态类型也是D*</span><br><span class="line">B* pB &#x3D; pD;&#x2F;&#x2F;pB的静态类型是它声明的类型B*，动态类型是pB所指向的对象pD的类型D*</span><br><span class="line">C* pC &#x3D; new C();</span><br><span class="line">pB &#x3D; pC;&#x2F;&#x2F;pB的动态类型是可以更改的，现在它的动态类型是C*</span><br></pre></td></tr></table></figure>
+<p>3、静态绑定：绑定的是对象的静态类型，某特性（比如函数）依赖于对象的静态类型，发生在编译期。<br>4、动态绑定：绑定的是对象的动态类型，某特性（比如函数）依赖于对象的动态类型，发生在运行期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line">    void DoSomething();</span><br><span class="line">    virtual void vfun();</span><br><span class="line">&#125;</span><br><span class="line">class C : public B</span><br><span class="line">&#123;</span><br><span class="line">    void DoSomething();&#x2F;&#x2F;首先说明一下，这个子类重新定义了父类的no-virtual函数，这是一个不好的设计，会导致名称遮掩；这里只是为了说明动态绑定和静态绑定才这样使用。</span><br><span class="line">    virtual void vfun();</span><br><span class="line">&#125;</span><br><span class="line">class D : public B</span><br><span class="line">&#123;</span><br><span class="line">    void DoSomething();</span><br><span class="line">    virtual void vfun();</span><br><span class="line">&#125;</span><br><span class="line">D* pD &#x3D; new D();</span><br><span class="line">B* pB &#x3D; pD;</span><br></pre></td></tr></table></figure>
+<p>让我们看一下，pD-&gt;DoSomething()和pB-&gt;DoSomething()调用的是同一个函数吗？<br>不是的，虽然pD和pB都指向同一个对象。因为函数DoSomething是一个no-virtual函数，它是静态绑定的，也就是编译器会在编译期根据对象的静态类型来选择函数。pD的静态类型是D<em>，那么编译器在处理pD-&gt;DoSomething()的时候会将它指向D::DoSomething()。同理，pB的静态类型是B</em>，那pB-&gt;DoSomething()调用的就是B::DoSomething()。</p>
+<p>让我们再来看一下，pD-&gt;vfun()和pB-&gt;vfun()调用的是同一个函数吗？<br>是的。因为vfun是一个虚函数，它动态绑定的，也就是说它绑定的是对象的动态类型，pB和pD虽然静态类型不同，但是他们同时指向一个对象，他们的动态类型是相同的，都是D*，所以，他们的调用的是同一个函数：D::vfun()。</p>
+<p>上面都是针对对象指针的情况，对于引用（reference）的情况同样适用。</p>
+<p>指针和引用的动态类型和静态类型可能会不一致，但是对象的动态类型和静态类型是一致的。<br>D.DoSomething()和D.vfun()永远调用的都是D::DoSomething()和D::vfun()。<br>至于那些事动态绑定，那些事静态绑定，有篇文章总结的非常好:<br>我总结了一句话：<strong>只有虚函数才使用的是动态绑定，其他的全部是静态绑定。</strong>目前我还没有发现不适用这句话的，如果有错误，希望你可以指出来。<br>特别需要注意的地方<br>当缺省参数和虚函数一起出现的时候情况有点复杂，极易出错。我们知道，虚函数是动态绑定的，但是为了执行效率，缺省参数是静态绑定的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line"> virtual void vfun(int i &#x3D; 10);</span><br><span class="line">&#125;</span><br><span class="line">class D : public B</span><br><span class="line">&#123;</span><br><span class="line"> virtual void vfun(int i &#x3D; 20);</span><br><span class="line">&#125;</span><br><span class="line">D* pD &#x3D; new D();</span><br><span class="line">B* pB &#x3D; pD;</span><br><span class="line">pD-&gt;vfun();</span><br><span class="line">pB-&gt;vfun();</span><br></pre></td></tr></table></figure>
+<p>有上面的分析可知pD-&gt;vfun()和pB-&gt;vfun()调用都是函数D::vfun()，但是他们的缺省参数是多少？<br>分析一下，缺省参数是静态绑定的，pD-&gt;vfun()时，pD的静态类型是D*，所以它的缺省参数应该是20；同理，pB-&gt;vfun()的缺省参数应该是10。编写代码验证了一下，正确。<br>对于这个特性，估计没有人会喜欢。所以，永远记住：<br>“绝不重新定义继承而来的缺省参数（Never redefine function’s inherited default parameters value.）”</p>
+<p>多态的实现：</p>
+<p>C++的多态性有两类：<br>1、静态多态性：也就是静态联编下实现的多态性，即是在程序编译时就能确定调用哪一个函数，函数重载和运算符重载实现的就是静态多态性；<br>2、动态多态性：也就是动态联编(虚函数)下实现的多态性，它只有在程序运行时才解决函数的调用问题，虚函数是实现动态多态性的基础<br>什么是联编 ?<br>又称为关联或绑定，是描述编译器决定在程序运行时，一个函数调用应执行哪段代码的一个术语，它把一个标识符与一个存储地址联系起来。</p>
+<p><strong>虚函数</strong></p>
+<p>声明格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">virtual 函数返回类型 函数名(形参表)</span><br><span class="line">&#123;</span><br><span class="line">	&#x2F;&#x2F;函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明：<br>1、只有类的成员函数才能声明为虚函数，普通函数不存在继承关系，不能声明为虚函数；<br>2、virtual关键字出现在虚函数的声明处，在虚函数的类外定义时不加virtual；<br>3、静态成员函数不能声明为虚函数；<br>4、内联函数不能声明为虚函数；<br>5、构造函数也不能声明为虚函数，因为它是在对象产生之前运行的函数；<br>6、析构函数可以是虚函数而且通常声明为虚函数。</p>
+<p>注：为什么要用指针-&gt;虚函数()方式而不是 对象.虚函数()方式来调用虚函数 ?<br>如果采用对象.虚函数()方式调用，只能得到一个个具体类的结果，不具备“跨类”功能。相反，指针则有“跨类”的能力，除此之外，引用也具备这种能力。</p>
+<p><strong>虚基类</strong><br>如果一个派生类从多个基类中派生，而这些基类又有一个共同的基类，则在这个派生类将保留共同基类的多份副本。<br><img src="https://img-blog.csdnimg.cn/20200114141048547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU1Mjc0NQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>要让派生类只保留共同基类的一份副本，可以让这个共同基类说明为虚基类。</p>
+<p>虚基类的定义格式</p>
+<p>格式： class 派生类 :virtual[继承方式] 基类名<br><img src="https://img-blog.csdnimg.cn/20200114141133851.png" alt="在这里插入图片描述"></p>
+<p>虚基类及其派生类的构造函数和析构函数<br>构造函数<br>1）要求虚基类的构造函数只能调用一次。直接或间接继承虚基类的所有派生类，都必须在构造函数的成员初始化表中列出对虚基类的初始化。因此，要注意以下几点；<br>2）虚基类的构造函数在所有非虚基类之前调用；<br>3）若同一层次中包含多个虚基类，这些虚基类的构造函数按它们说明的次序调用；<br>4）若虚基类由非虚基派生而来，则先调用基类构造函数，再调用派生类的构造函数。<br>析构函数<br>调用顺序正好与它的构造函数调用顺序相反</p>
+<p><strong>纯虚函数和抽象类</strong><br>纯虚函数</p>
+<p>1)在某些情况下, 在基类中不能为虚函数提供具体定义, 这时可以把它说明为纯虚函数。它的定义留给派生类来完成。</p>
+<p>2)纯虚函数的声明格式：<br>class 类名<br>{<br>    …<br>    virtual 返回类型 函数名(形参表) = 0；<br>    …<br>}<br>说明<br>1、纯虚函数没有也不允许有函数体，如果强行给它加上将会出现错误；<br>2、最后的“ = 0”并不表示函数的返回值为0，它只是形式上的作用，告诉编译系统“这是纯虚函数”；<br>3、是一个纯虚函数的声明语句，它的末尾应有分号；<br>4、纯虚函数的作用：在基类中为派生类保留一个虚函数的名字，以便派生类根据需要进行定义。如果在基类没有保留虚函数的名字，则无法实现多态性。<br>5、如果在一个类中声明了纯虚函数，而在其派生类中没有对该函数进行定义，则该虚函数在派生类中仍然为纯虚函数。</p>
+<p>抽象类:</p>
+<p>1.当一个类具有一个纯虚函数，这个类就是抽象类<br>2.抽象类不能实例化对象<br>3.子类继承抽象类，必须要实现纯虚函数，如果没有，子类也是抽象类<br>抽象类的作用：为了继承约束，根本不知道未来的实现<br>抽象类不能用作参数类型、函数返回类型或强制类型转换，但可以声明抽象类的指针或引用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://zjw1996.github.io/2020/01/12/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%A5%97%E6%8E%A5%E5%AD%97(Socket)%EF%BC%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -498,7 +670,7 @@ socklen_t *addrlen：客户端套接字长度地址。</code></pre><p>如果使�
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
