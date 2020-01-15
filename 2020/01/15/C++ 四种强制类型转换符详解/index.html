@@ -86,17 +86,19 @@
 
 
 
-<meta name="description" content="做人冇梦想 同咸鱼有乜分别咧">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://zjw1996.github.io/about/index.html">
+<meta name="description" content="前言C++的强制类型转换对类型转换做了细分，提供了四种不同类型转换，以支持不同需求的转换；类型转换有了统一的标示符，利于代码排查和检视。这四种类型转换是：static_case(静态转换)、dynamic_cast(动态转换)、const_cast(常量转换)和reinterpret_cast(不相关类型的转换)。下面分别来介绍这四种转换：static_cast、dynamic_cast、cons">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 四种强制类型转换符详解">
+<meta property="og:url" content="http://zjw1996.github.io/2020/01/15/C++%20%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%AC%A6%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="DreamWei">
-<meta property="og:description" content="做人冇梦想 同咸鱼有乜分别咧">
+<meta property="og:description" content="前言C++的强制类型转换对类型转换做了细分，提供了四种不同类型转换，以支持不同需求的转换；类型转换有了统一的标示符，利于代码排查和检视。这四种类型转换是：static_case(静态转换)、dynamic_cast(动态转换)、const_cast(常量转换)和reinterpret_cast(不相关类型的转换)。下面分别来介绍这四种转换：static_cast、dynamic_cast、cons">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-01-10T06:31:59.000Z">
-<meta property="article:modified_time" content="2020-01-10T08:02:23.909Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200115120248531.png">
+<meta property="article:published_time" content="2020-01-15T06:40:09.194Z">
+<meta property="article:modified_time" content="2020-01-15T06:38:28.087Z">
 <meta property="article:author" content="Stephen Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200115120248531.png">
 
 
 
@@ -126,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://zjw1996.github.io/about/"/>
+  <link rel="canonical" href="http://zjw1996.github.io/2020/01/15/C++ 四种强制类型转换符详解/"/>
 
 
 
 
 
-  <title>about | DreamWei</title>
+  <title>C++ 四种强制类型转换符详解 | DreamWei</title>
   
 
 
@@ -283,33 +285,179 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zjw1996.github.io/2020/01/15/C++%20%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%AC%A6%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Stephen Z">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DreamWei">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">C++ 四种强制类型转换符详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-15T14:40:09+08:00">
+                2020-01-15
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-15T14:38:28+08:00">
+                2020-01-15
+              </time>
+            
+          </span>
+
           
-        
-      </div>
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>C++的强制类型转换对类型转换做了细分，提供了四种不同类型转换，以支持不同需求的转换；类型转换有了统一的标示符，利于代码排查和检视。这四种类型转换是：static_case(静态转换)、dynamic_cast(动态转换)、const_cast(常量转换)和reinterpret_cast(不相关类型的转换)。<br>下面分别来介绍这四种转换：static_cast、dynamic_cast、const_cast、reinterpret_cast，它们都是类模板。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式均为：xx_cast&lt;type-id&gt;(expression) ，其中type-id-要转换成什么类型，expression-被转换类型的目标变量</span><br></pre></td></tr></table></figure>
+
+<h1 id="static-case和dynamic-cast"><a href="#static-case和dynamic-cast" class="headerlink" title="static_case和dynamic_cast"></a>static_case和dynamic_cast</h1><h2 id="类的继承关系图"><a href="#类的继承关系图" class="headerlink" title="类的继承关系图"></a>类的继承关系图</h2><p><img src="https://img-blog.csdnimg.cn/20200115120248531.png" alt="在这里插入图片描述"><br>从图中可知，派生类不仅会继承基类中可继承的方法和属性，还有自身的方法和属性。<br>当我们从派生类向基类转换时，也就是上行转换，static_case和dynamic_cast这两种方法都是能安全转换的。但是当向下转换类型，也就是我们从基类向派生类转换，当我们采用传统的C语言和c++转换时，就会出现意想不到的情况，因为转换后派生类自己的方法和属性丢失了，一旦我们去调用派生类的方法和属性那就糟糕了，而dynamic_cast这种强制转换内部提供了安全的转换，解决了这种问题。其内部实现可参考<a href="https://blog.csdn.net/passion_wu128/article/details/38511957" target="_blank" rel="noopener">passion_wu128</a> 的这篇博客。<br>以下则主要讲static_case和dynamic_cast的用法和特点。</p>
+<h2 id="static-case"><a href="#static-case" class="headerlink" title="static_case"></a>static_case</h2><p>（1）使用场景</p>
+<p>   1 在基本数据类型之间转换，如把 int 转换为 char，这种带来安全性问题由程序员来保证； </p>
+<p>   2 把空指针转换成目标类型的空指针。 </p>
+<p>   3 用于类层次结构中基类和派生类之间指针或引用的转换。<br>        上行转换（派生类—-&gt;基类）是安全的；<br>        下行转换（基类—-&gt;派生类）由于没有动态类型检查，所以是不安全的。<br>   4 把任何类型的表达式转换成void类型</p>
+<pre><code>注意：static_cast不能转换掉expression的const、volatile、或者__unaligned属性</code></pre><p>（2）使用特点</p>
+<p>   主要执行非多态的转换操作，用于代替C中通常的转换操作。<br>    隐式转换都建议使用 static_cast 进行标明和替换。<br>    不能使用 static_cast 在有类型指针内转换。</p>
+<p>类上行和下行转换举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Base</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line">class Derived : public Base</span><br><span class="line">&#123;&#125;；</span><br><span class="line"></span><br><span class="line">Base* pB &#x3D; new Base();</span><br><span class="line">&#x2F;&#x2F;用static_cast的下行转换，不安全</span><br><span class="line">if(Derived* pD &#x3D; static_cast&lt;Derived*&gt;(pB))&#123;&#125;</span><br><span class="line"></span><br><span class="line">Derived* pD &#x3D; new Derived();</span><br><span class="line">&#x2F;&#x2F;上行转换，安全</span><br><span class="line">if(Base* pB &#x3D; static_cast&lt;Base*&gt;(pD))&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="dynamic-cast"><a href="#dynamic-cast" class="headerlink" title="dynamic_cast"></a>dynamic_cast</h2><p>（1）使用场景</p>
+<p>   主要用于将一个父类的指针/引用转化为子类的指针/引用（下行转换）。<br>    注：由于这个dynamic_cast要耗费重大的运行成本，应避免频繁使用。</p>
+<p>（2）使用特点</p>
+<p> 1 基类必须要有虚函数，因为 dynamic_cast 是运行时类型检查，需要运行时类型信息，而这个信息是存储在类的虚函数表中。<br>  2 对于下行转换，dynamic_cast 是安全的（当类型不一致时，转换过来的是空指针），而 static_cast 是不安全的。<br>  3 对指针进行 dynamic_cast，失败返回 NULL，成功返回正常 cast 后的对象指针；对引用进行 dynamic_cast，失败抛出一个异常，成功返回正常 cast 后的对象引用。</p>
+<p>（3）转换方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dynamic_cast&lt; type* &gt;(e)&#x2F;&#x2F;type必须是一个类类型且必须是一个有效的指针</span><br><span class="line">dynamic_cast&lt; type&amp; &gt;(e)&#x2F;&#x2F;type必须是一个类类型且必须是一个左值</span><br><span class="line">dynamic_cast&lt; type&amp;&amp; &gt;(e)&#x2F;&#x2F;type必须是一个类类型且必须是一个右值</span><br></pre></td></tr></table></figure>
+
+<p>e的类型必须符合以下三个条件中的任何一个：<br>1、e的类型是目标类型type的公有派生类<br>2、e的类型是目标type的共有基类<br>3、e的类型就是目标type的类型。</p>
+<p>如果一条dynamic_cast语句的转换目标是指针类型并且失败了，则结果为0。如果转换目标是引用类型并且失败了，则dynamic_cast运算符将抛出一个std::bad_cast异常(该异常定义在typeinfo标准库头文件中)。e也可以是一个空指针，结果是所需类型的空指针。</p>
+<p>dynamic_cast主要用于类层次间的上行转换和下行转换，还可以用于类之间的交叉转换（cross cast）。</p>
+<p>在类层次间进行上行转换时，dynamic_cast和static_cast的效果是一样的；在进行下行转换时，dynamic_cast具有类型检查的功能，比static_cast更安全。</p>
+<p>代码举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">class CBase    &#x2F;&#x2F; 基类(父类)</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    &#x2F;&#x2F; dynamic_cast在将父类cast到子类时，父类必须要有虚函数</span><br><span class="line">    virtual int test() &#123; return 0; &#125; &#x2F;&#x2F; 一定要是 virtual</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class CDerived : public CBase  &#x2F;&#x2F; 派生类(子类)</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    int test() &#123; return 1; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    CBase *p_CBase &#x3D; new CBase;  &#x2F;&#x2F; 基类对象指针</span><br><span class="line">    CDerived *p_CDerived &#x3D; dynamic_cast&lt;CDerived *&gt;(p_CBase);  &#x2F;&#x2F; 将基类对象指针类型转换为派生类对象指针</span><br><span class="line"></span><br><span class="line">    CBase i_CBase;    &#x2F;&#x2F; 创建基类对象</span><br><span class="line">    CBase &amp;r_CBase &#x3D; i_CBase;    &#x2F;&#x2F; 基类对象的引用</span><br><span class="line">    CDerived &amp;r_CDerived &#x3D; dynamic_cast&lt;CDerived &amp;&gt;(r_CBase);  &#x2F;&#x2F; 将基类对象的引用转换派生类对象的引用</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h1><p>表达式const_cast&lt;T<em>&gt;(a)被用于从一个类中去除以下这些属性：const, volatile, 和 __unaligned。其中T和a必须是相同的类型。<br>class A { };<br>void f()<br>{<br>    const A *pa = new A;//const对象<br>    A *pb;//非const对象<br>    //pb = pa; // 这里将出错，不能将const对象指针赋值给非const对象<br>    pb = const_cast&lt;A</em>&gt;(pa); // 现在OK了<br>    …<br>}<br>对于本身定义时为const的类型，即使你去掉const性，在你操作这片内容时候也要小心，只能读不能写操作，否则还是会出错。<br>const_cast操作不能在不同的种类间转换。相反，它仅仅把一个它作用的表达式转换成常量。它可以使一个本来不是const类型的数据转换成const类型的，或者把const属性去掉。</p>
+<h1 id="reinterpret-cast"><a href="#reinterpret-cast" class="headerlink" title="reinterpret_cast"></a>reinterpret_cast</h1><p>reinterpret_cast运算符是用来处理无关类型之间的转换；它会产生一个新的值，这个值会有与原始参数（expressoin）有完全相同的比特位。</p>
+<p>static_cast 和 reinterpret_cast 的用法和区别： static_cast 运算符完成<strong>相关类型</strong>之间的转换. 而 reinterpret_cast 处理<strong>互不相关</strong>的类型之间的转换.</p>
+<p>所谓”相关类型”指的是从逻辑上来说,多多少少还有那么一点联系的类型,比如从 double 到 int,我们知道它们之间还是有联系的,只是精度差异而已,使用 static_cast 就是告诉编译器:我知道会引起精度损失,但是我不在乎. 又如从 void* 到 具体类型指针像 char<em>,从语义上我们知道 void</em> 可以是任意类型的指针,当然也有可能是 char* 型的指针,这就是所谓的”多多少少还有那么一点联系”的意思. 又如从派生类层次中的上行转换(即从派生类指针到基类指针,因为是安全的,所以可以用隐式类型转换)或者下行转换(不安全,应该用 dynamic_cast 代替).对于static_cast操作符,如果需要截断,补齐或者指针偏移编译器都会自动完成.注意这一点,是和 reinterpret_cast 的一个根本区别.reinterpret_cast做转换时编译器不会做任何检查,截断,补齐的操作,只是把比特位拷贝过去.所以 reinterpret_cast 常常被用作不同类型指针间的相互转换,因为所有类型的指针的长度都是一致的,按比特位拷贝后不会损失数据.</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/14/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E7%BB%A7%E6%89%BF%E3%80%81%E5%A4%9A%E6%80%81%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/" rel="next" title="学习随笔：继承、多态与虚函数">
+                <i class="fa fa-chevron-left"></i> 学习随笔：继承、多态与虚函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -342,8 +490,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -417,6 +574,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static-case和dynamic-cast"><span class="nav-number">2.</span> <span class="nav-text">static_case和dynamic_cast</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类的继承关系图"><span class="nav-number">2.1.</span> <span class="nav-text">类的继承关系图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static-case"><span class="nav-number">2.2.</span> <span class="nav-text">static_case</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dynamic-cast"><span class="nav-number">2.3.</span> <span class="nav-text">dynamic_cast</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#const-cast"><span class="nav-number">3.</span> <span class="nav-text">const_cast</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reinterpret-cast"><span class="nav-number">4.</span> <span class="nav-text">reinterpret_cast</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
