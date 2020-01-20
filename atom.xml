@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zjw1996.github.io/"/>
-  <updated>2020-01-15T06:38:28.087Z</updated>
+  <updated>2020-01-20T19:16:25.624Z</updated>
   <id>http://zjw1996.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习随笔：深拷贝与浅拷贝</title>
+    <link href="http://zjw1996.github.io/2020/01/21/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E6%B7%B1%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B5%85%E6%8B%B7%E8%B4%9D/"/>
+    <id>http://zjw1996.github.io/2020/01/21/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E6%B7%B1%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B5%85%E6%8B%B7%E8%B4%9D/</id>
+    <published>2020-01-20T19:17:19.098Z</published>
+    <updated>2020-01-20T19:16:25.624Z</updated>
+    
+    <content type="html"><![CDATA[<p>在看以前的笔记时发现关于浅拷贝与深拷贝的知识点整理的有点模糊。所以把内容重新整理一下。</p><p>简单来说，<br>浅拷贝（位拷贝）：简单的赋值拷贝操作。类中的合成拷贝构造函数就是浅拷贝。<br>深拷贝：在堆区重新申请空间，进行拷贝操作。</p><p>先说总结：如果属性有在堆区开辟的，一定要自己提供拷贝构造函数，防止浅拷贝带来问题。如，若用合成拷贝构造函数来进行拷贝初始化，则在调用析构函数释放自身在堆区开辟的内存空间时，会导致堆区内存被重复释放，致使程序崩溃。</p><p>现用一段示例代码进一步说明该结论：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Person</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">Person() &#123;</span><br><span class="line">cout &lt;&lt; &quot;Person默认构造函数调用&quot; &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line">Person(int age, int height) &#123;</span><br><span class="line">m_Age &#x3D; age;</span><br><span class="line">m_Height &#x3D; new int(height);</span><br><span class="line">cout &lt;&lt; &quot;Person有参构造函数调用&quot; &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;自己实现拷贝构造函数，解决浅拷贝带来的问题</span><br><span class="line">Person(const Person&amp; p) &#123;</span><br><span class="line">m_Age &#x3D; p.m_Age;</span><br><span class="line">cout &lt;&lt; &quot;Person拷贝构造函数调用&quot; &lt;&lt; endl;</span><br><span class="line">&#x2F;&#x2F;m_Height &#x3D;p.m_Height;编译器默认实现就是这行代码；</span><br><span class="line">&#x2F;&#x2F;深拷贝操作</span><br><span class="line">m_Height &#x3D; new int(*p.m_Height);  </span><br><span class="line">&#125;</span><br><span class="line">~Person() &#123;</span><br><span class="line">&#x2F;&#x2F;析构代码，将堆区开辟数据做释放操作</span><br><span class="line">cout &lt;&lt; &quot;Person析构函数调用&quot; &lt;&lt; endl;</span><br><span class="line">if (m_Height !&#x3D; NULL) &#123;</span><br><span class="line">delete m_Height;</span><br><span class="line">&#x2F;&#x2F;避免出现野指针，将其置空。</span><br><span class="line">m_Height &#x3D; NULL;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">public:</span><br><span class="line">int m_Age &#x3D; 10;</span><br><span class="line">int * m_Height &#x3D;NULL;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void test01() &#123;</span><br><span class="line">Person p1(16,170);</span><br><span class="line">cout &lt;&lt; &quot;p1的年龄为：&quot; &lt;&lt; p1.m_Age &lt;&lt;&quot;  p1的身高为：&quot;&lt;&lt;*p1.m_Height&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">Person p2(p1);</span><br><span class="line">cout &lt;&lt; &quot;p2的年龄为：&quot; &lt;&lt; p2.m_Age &lt;&lt;&quot;  p2的身高为：&quot;&lt;&lt;*p2.m_Height&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">test01();</span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>再用两张图来进一步说明：<br>第一张是使用合成拷贝构造函数：注意两个指针指向同一堆空间<br><img src="https://img-blog.csdnimg.cn/20200121031500747.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU1Mjc0NQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">要解决这个问题，自己创建一个拷贝构造函数，在堆区重新申请一块内存，存放相同的数据m_Height，此时p1和p2的m_Height指向的内存空间已经不一样了。<br><img src="https://img-blog.csdnimg.cn/20200121031603463.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjU1Mjc0NQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在看以前的笔记时发现关于浅拷贝与深拷贝的知识点整理的有点模糊。所以把内容重新整理一下。&lt;/p&gt;
+&lt;p&gt;简单来说，&lt;br&gt;浅拷贝（位拷贝）：简单的赋值拷贝操作。类中的合成拷贝构造函数就是浅拷贝。&lt;br&gt;深拷贝：在堆区重新申请空间，进行拷贝操作。&lt;/p&gt;
+&lt;p&gt;先说总结：如果属
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>学习随笔：C++的四种强制类型转换符</title>
