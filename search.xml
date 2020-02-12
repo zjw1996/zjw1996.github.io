@@ -4,11 +4,12 @@
     <title>学习随笔：C++ 对象模型和this指针</title>
     <url>/2020/01/22/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9AC++%20%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E5%92%8Cthis%E6%8C%87%E9%92%88/</url>
     <content><![CDATA[<h2 id="在C-中，只有非静态成员变量才属于类的对象上"><a href="#在C-中，只有非静态成员变量才属于类的对象上" class="headerlink" title="在C++中，只有非静态成员变量才属于类的对象上"></a>在C++中，只有非静态成员变量才属于类的对象上</h2><p>成员变量和成员函数是分开存储的。<br>正如下面的例子，对象p只占用了4个字节。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">class Person</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	int m_Age;</span><br><span class="line">	static int b;</span><br><span class="line">	void func() &#123;&#125;</span><br><span class="line">	static void funcc()&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void test01() &#123;</span><br><span class="line">	Person p;</span><br><span class="line">	cout &lt;&lt; &quot;p占用空间&quot; &lt;&lt; sizeof(p) &lt;&lt; endl;  &#x2F;&#x2F; p占用空间4，即只有m_Age的大小才算在了类对象占用的空间上</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	test01();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注：空类时，类对象也会占用1个字节，即</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Person&#123;&#125;;</span><br></pre></td></tr></table></figure>
-
+<p>#include <iostream></p>
+<p>using namespace std;</p>
+<p>class Person<br>{<br>public:<br>    int m_Age;<br>    static int b;<br>    void func() {}<br>    static void funcc(){}<br>};</p>
+<p>void test01() {<br>    Person p;<br>    cout &lt;&lt; “p占用空间” &lt;&lt; sizeof(p) &lt;&lt; endl;  // p占用空间4，即只有m_Age的大小才算在了类对象占用的空间上<br>}</p>
+<p>int main()<br>{<br>    test01();<br>    return 0;<br>}</p>
+<p>注：空类时，类对象占用1个字节</p>
 <h2 id="this-指针"><a href="#this-指针" class="headerlink" title="this 指针"></a>this 指针</h2><p>由上可知，成员变量和成员函数分开存储的，每一个非静态成员函数只会诞生一份函数实例，也就是说多个同类型的对象会公用一份代码，那这一块代码是如何区分哪一个对象调用自己的呢？<br>C++中通过自动提供特殊的对象指针：this指针，来解决这个问题。<br>this指针是隐含在每一个非静态成员函数内的一种指针，不用自己定义，可直接使用。取上面那个例子来讲，一个对象的this指针相当于 Person * const this;<br>那this指针有什么用途呢？<br>1、当形参和成员变量同名时，可用this指针来区分。<br>2、在类的非静态成员函数中返回对象本身，可使用return *this ，这个也是实现链式编程的一个方式。</p>
 <h3 id="解决名称冲突"><a href="#解决名称冲突" class="headerlink" title="解决名称冲突"></a>解决名称冲突</h3><p>例如在构造函数中发生冲突：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Person</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	int m_Age &#x3D;10;</span><br><span class="line">public:</span><br><span class="line">	Person() &#x3D; default;</span><br><span class="line">	Person(int age):m_Age(age)&#123;&#125;</span><br><span class="line">	Person(int m_Age) &#123;</span><br><span class="line">		&#x2F;&#x2F;m_Age &#x3D; m_Age; &#x2F;&#x2F; 这个构造函数是不能初始化m_Age的。这时候需要用this指针来指明该左值其实是我的成员变量</span><br><span class="line">		this-&gt;m_Age &#x3D;  m_Age;&#x2F;&#x2F;这样才能初始化。</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
