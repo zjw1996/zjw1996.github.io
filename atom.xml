@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zjw1996.github.io/"/>
-  <updated>2020-02-20T03:22:16.054Z</updated>
+  <updated>2020-02-28T08:04:04.356Z</updated>
   <id>http://zjw1996.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习随笔：istringstream的用法</title>
+    <link href="http://zjw1996.github.io/2020/02/28/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9Aistringstream%E7%9A%84%E7%94%A8%E6%B3%95/"/>
+    <id>http://zjw1996.github.io/2020/02/28/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9Aistringstream%E7%9A%84%E7%94%A8%E6%B3%95/</id>
+    <published>2020-02-28T08:04:01.998Z</published>
+    <updated>2020-02-28T08:04:04.356Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前跟着教程学习编写渲染器时，记得有一个比较有用的C++的输入输出控制类，感觉挺有用的，因此在此总结一下：<br>C++引入了ostringstream、istringstream、stringstream这三个类，要使用他们创建对象就必须包含<sstream>这个头文件。</p><p>程序源码中使用了这样的语句：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">std::ifstream in(filename, std::ifstream::in);</span><br><span class="line">if (in.is_open()) &#123;</span><br><span class="line">  std::string line;</span><br><span class="line">  while (std::getline(in,line)) &#123;</span><br><span class="line">    char trash;</span><br><span class="line">    std::istringstream iss(line);</span><br><span class="line">    if(line.substr(0,2) &#x3D;&#x3D; &quot;v &quot;)&#123;</span><br><span class="line">      iss &gt;&gt; trash;</span><br><span class="line">      Vec3f v;  &#x2F;&#x2F;typedef vec&lt;3,  float&gt; Vec3f;</span><br><span class="line">      for (int i &#x3D; 0; i &lt; 3; i++) iss &gt;&gt; v[i];</span><br><span class="line">      verts_.push_back(v);</span><br><span class="line">    &#125; </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>读取文件中的每一行，将一行中的标志字符赋给trash，将另外三个浮点数赋给向量v；</p><p>istringstream类用于执行C++风格的串流的输入操作。</p><p>ostringstream类用于执行C风格的串流的输出操作。</p><p>strstream类同时可以支持C风格的串流的输入输出操作。</p><p>istringstream的构造函数原形如下：</p><p>istringstream::istringstream(string str);</p><p>它的作用是从string对象str中读取字符。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;之前跟着教程学习编写渲染器时，记得有一个比较有用的C++的输入输出控制类，感觉挺有用的，因此在此总结一下：&lt;br&gt;C++引入了ostringstream、istringstream、stringstream这三个类，要使用他们创建对象就必须包含&lt;sstream&gt;这个头文件。
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>学习随笔：从4行代码看右值引用</title>
