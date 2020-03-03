@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zjw1996.github.io/"/>
-  <updated>2020-02-20T03:22:16.054Z</updated>
+  <updated>2020-03-03T16:27:39.216Z</updated>
   <id>http://zjw1996.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>学习随笔：渲染管线之视角矩阵</title>
+    <link href="http://zjw1996.github.io/2020/03/04/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E4%B9%8B%E8%A7%86%E8%A7%92%E7%9F%A9%E9%98%B5/"/>
+    <id>http://zjw1996.github.io/2020/03/04/%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94%EF%BC%9A%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E4%B9%8B%E8%A7%86%E8%A7%92%E7%9F%A9%E9%98%B5/</id>
+    <published>2020-03-03T16:28:52.148Z</published>
+    <updated>2020-03-03T16:27:39.216Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>图形渲染管线主要包括两个功能：一是将物体3D坐标转变为屏幕空间2D坐标，二是为屏幕<br>每个像素点进行着色。</p><h1 id="摄像机视角矩阵推导"><a href="#摄像机视角矩阵推导" class="headerlink" title="摄像机视角矩阵推导"></a>摄像机视角矩阵推导</h1><p>虚拟摄像机定义了我们的观察空间，需要将模型从世界坐标通过视角矩阵变换到观察坐标。我们需要理解视角矩阵的推导，才能在编写渲染器的时候知道要怎么写视角矩阵就可以变换相机得到渲染不同角度的二维图；简而言之就是摄像机在空间有着特定的位置及朝向，它所观察到的物体取决于物体与摄像机的相对位置。</p><p>要将物体的坐标变为观察坐标，也就是将摄像机变换到世界坐标的原点位置，以及它的坐标轴与世界坐标轴重合，物体做同样的坐标变换，这样物体的坐标就是相对于摄像机的新坐标，即观察坐标；那么要怎么才能求出摄像机所需的变换矩阵呢？</p><p>分为两步：先将摄像机的位置移到世界坐标的原点；然后将摄像机旋转，使其右上前三个方向与世界坐标轴重合。我们把摄像机的位置设为C = [cx cy cz 1]T（注：点的齐次坐标在第四维补1，向量补0。且本文的向量和矩阵后加T表示转置。下文略）;其三个表示朝向的坐标轴表示为U是右向量，V是上向量，W是前向量：[ux uy uz]T ,[vx vy vz]T ,[wx wy wz]T;视角变换的目的即把它的这些参数转换为：位置[ 0, 0, 0 ]T，以及三个坐标轴：[ 1, 0,0 ]T、[ 0, 1, 0 ]T、 [ 0, 0, 1 ]T。<br>第一步：平移。这个很简单。平移矩阵T为：<br>[1 0 0 -cx]<br>[0 1 0 -cy]<br>[0 0 1 -cz]<br>[0 0 0  1 ]<br>则TC = [0 0 0 0];<br>第二步：旋转；旋转操作需要点小技巧。我们的目的是把三个轴分别转换成[1,0,0]、[0,1,0]、[0,0,1]，令旋转矩阵为M，可以表示为如下所示：先设矩阵Z为：<br>   [ux vx  wx   0]<br>   [uy vy  wy   0]<br>  [uz vz  wz   0]<br>  [0   0    0    1 ]<br>  M<em>Z = I；<br>易知矩阵Z是一个正交矩阵，而正交矩阵有一个性质是矩阵的逆等于矩阵的转置；所以求得M为Z的转置；<br>所以M为：<br>   [ux  uy  uz   0]<br>   [vx  vy  vz   0]<br>  [wx  wy  wz   0]<br>  [0   0    0    1 ]<br>所以视角矩阵就是lookat = M</em>T；<br>但是直接使用这个矩阵其实是有问题的，若你的渲染器是模仿OpenGL，那观察空间是右手系，摄像机对着的方向应与世界坐标系的z轴正方向相反，所以实际变换的时候对前向量取反。<br>  OK， 视角矩阵的推导完毕，现在我们知道：<br>   任一时刻，通过摄像机位置C(cx,cy,cz)，以及三个坐标轴(U,V,W)，可以得到当前的视角变换矩阵;</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h1&gt;&lt;p&gt;图形渲染管线主要包括两个功能：一是将物体3D坐标转变为屏幕空间2D坐标，二是为屏幕&lt;br&gt;每个像素点进行着色。&lt;/p&gt;
+&lt;h1 id=&quot;摄像
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>学习随笔：从4行代码看右值引用</title>
