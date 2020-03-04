@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/2020030415591898.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200304155940455.png">
 <meta property="article:published_time" content="2020-03-04T08:02:54.043Z">
-<meta property="article:modified_time" content="2020-03-04T08:02:21.250Z">
+<meta property="article:modified_time" content="2020-03-04T08:28:42.325Z">
 <meta property="article:author" content="Stephen Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200304132637941.png">
@@ -358,7 +358,7 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-03-04T16:02:21+08:00">
+              <time title="Post modified" itemprop="dateModified" datetime="2020-03-04T16:28:42+08:00">
                 2020-03-04
               </time>
             
@@ -401,7 +401,7 @@
 <h2 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h2><p>透视除法：<br><img src="https://img-blog.csdnimg.cn/20200304153957670.png" alt="在这里插入图片描述"><br>到了透视除法，深度信息现在用得上了，从齐次坐标转换为普通点坐标时，各项都除以第四维坐标。<br>经过这一步，就丢弃了原始的z值（得到了CVV中对应的z值,设为z’），顶点才算完成了投影。而在这两步之间的就是CVV裁剪过程，所以裁剪空间使用的是齐次坐标，主要原因在于透视除法会损失一些必要的信息（如原始z，第4个-z保留的）从而使裁剪变得更加难以处理。<br>x’ = -Nx/z;<br>y’ = -Ny/z;<br>z’ = -(az+b)/z;</p>
 <p>后面的CVV应该是x’,y’,z’的范围都为[-1，1]的规则体，便于进行多边形裁剪。而我们可以适当的选择系数a和b，使得这个式子在z’ = -N的时候值为-1，而在z’ = -F的时候值为1，从而在z方向上构建CVV。</p>
 <p>接下来我们就求出a和b：<br><img src="https://img-blog.csdnimg.cn/20200304154637762.png" alt="在这里插入图片描述"><br>现在z限制在了-1 和 1之间了；但是x’和y’仍没有进行线性变换，所以现在对x’ y’坐标进行变换；</p>
-<p>我们知道-Nx / z的有效范围是投影平面的左边界值（记为left）和右边界值（记为right），即[left, right]，-Ny / z则为[bottom, top]。而现在我们想把-Nx / z属于[left, right]映射到x属于[-1, 1]中，-Ny / z属于[bottom, top]映射到y属于[-1, 1]中 ,由线性关系可得：<br><img src="https://img-blog.csdnimg.cn/20200304155430753.png" alt="在这里插入图片描述"><br>最终在CVV中的投影点：<br><img src="https://img-blog.csdnimg.cn/2020030415551394.png" alt="在这里插入图片描述"><br>现在需要逆推出最终的透视矩阵，对P‘齐次坐标同乘-z的话会好处理很多；所以解以下方程组则可得到M<br><img src="https://img-blog.csdnimg.cn/2020030415591898.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200304155940455.png" alt="在这里插入图片描述"><br>M就是最终的透视变换矩阵。相机空间中的顶点，如果在视锥体中，则变换后就在CVV中。如果在视锥体</p>
+<p>我们知道-Nx / z的有效范围是投影平面的左边界值（记为left）和右边界值（记为right），即[left, right]，-Ny / z则为[bottom, top]。而现在我们想把-Nx / z属于[left, right]映射到x属于[-1, 1]中，-Ny / z属于[bottom, top]映射到y属于[-1, 1]中 ,由线性关系可得：<br><img src="https://img-blog.csdnimg.cn/20200304155430753.png" alt="在这里插入图片描述"><br>最终在NDC（归一化的设备坐标）中的投影点：<br><img src="https://img-blog.csdnimg.cn/2020030415551394.png" alt="在这里插入图片描述"><br>现在需要逆推出最终的透视矩阵，对P‘齐次坐标同乘-z的话会好处理很多；所以解以下方程组则可得到M<br><img src="https://img-blog.csdnimg.cn/2020030415591898.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200304155940455.png" alt="在这里插入图片描述"><br>M就是最终的透视变换矩阵。相机空间中的顶点，如果在视锥体中，则变换后就在CVV中。如果在视锥体</p>
 <p>外，变换后就在CVV外。而CVV本身的规则性对于多边形的裁剪很有利。OpenGL在构建透视投影矩阵的时</p>
 <p>候就使用了M的形式。注意到M的最后一行不是(0 0 0 1)而是(0 0 -1 0)，因此可以看出透视变换不是一种仿</p>
 <p>射变换，它是非线性的。另外一点你可能已经想到，对于投影面来说，它的宽和高大多数情况下不同，即宽</p>
